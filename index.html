@@ -603,22 +603,7 @@
     </div>
 
 
-    <!-- =========================
-         確認済み
-    ========================= -->
-
-    <div class="progress">
-
-        確認済み：
-
-        <span id="count">0</span>
-
-        /
-
-        <span id="total">0</span>
-
-    </div>
-
+ 
 
     <!-- =========================
          パン
@@ -1367,58 +1352,7 @@
     );
 
 
-    /* ==================================================
-       チェック数
-    ================================================== */
-
-    const checks =
-        document.querySelectorAll(
-            ".check"
-        );
-
-
-    const count =
-        document.getElementById(
-            "count"
-        );
-
-
-    const total =
-        document.getElementById(
-            "total"
-        );
-
-
-    total.textContent =
-        checks.length;
-
-
-    function updateCount() {
-
-        const checked =
-            document.querySelectorAll(
-                ".check:checked"
-            ).length;
-
-
-        count.textContent =
-            checked;
-
-    }
-
-
-    checks.forEach(
-        check => {
-
-            check.addEventListener(
-                "change",
-                updateCount
-            );
-
-        }
-    );
-
-
+  
 </script>
 
 
