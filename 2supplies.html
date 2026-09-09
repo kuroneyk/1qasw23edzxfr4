@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>備品確認</title>
+
+    <style>
+
+        /* =========================
+           全体
+        ========================= */
+
+        body {
+            font-family: sans-serif;
+            background: #f7f4f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           タイトル
+        ========================= */
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           確認済み
+        ========================= */
+
+        .progress {
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0 20px;
+        }
+
+
+        /* =========================
+           備品カテゴリー
+        ========================= */
+
+        .category {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           項目タイトル
+        ========================= */
+
+        .sub-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 5px;
+        }
+
+        .sub-title:first-child {
+            margin-top: 0;
+        }
+
+
+        /* =========================
+           チェックボックス
+        ========================= */
+
+        label {
+            display: block;
+            padding: 8px 5px;
+            font-size: 16px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+
+        /* =========================
+           戻るボタン
+        ========================= */
+
+        .back-link {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            text-decoration: none;
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .back-link:hover {
+            color: #222;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================
+         タイトル
+    ========================= -->
+
+    <h1>🧹 備品確認</h1>
+
+
+    <!-- =========================
+         確認済み
+    ========================= -->
+
+    <div class="progress">
+
+        確認済み：
+        <span id="count">0</span>
+        /
+        <span id="total">0</span>
+
+    </div>
+
+
+    <!-- =========================
+         備品一覧
+    ========================= -->
+
+    <div class="category">
+
+
+        <!-- 洗剤・清掃 -->
+
+        <div class="sub-title">
+            洗剤・清掃
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            ヤシの実洗剤
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            スポンジ
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            爪ブラシ（すみっこブラシ）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            クレンザー
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ブリーチ
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            洗濯洗剤
+        </label>
+
+
+        <!-- 消毒・衛生 -->
+
+        <div class="sub-title">
+            消毒・衛生
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            青ダスター
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            白ダスター
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            サラヤアルコールスプレー
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            手指消毒スプレー（つめかえ）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ウォシュボン
+        </label>
+
+
+        <!-- シール・その他 -->
+
+        <div class="sub-title">
+            シール・その他
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            丸形シール
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            四角形シール
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            テンポイ
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            保冷剤
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ゴミ袋
+        </label>
+
+
+        <!-- ラップ・包装 -->
+
+        <div class="sub-title">
+            ラップ・包装
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            ラップ（小）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ラップ（大）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            クッキングシート
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            アルミホイル
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ジップロック
+        </label>
+
+
+        <!-- 手袋 -->
+
+        <div class="sub-title">
+            手袋
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            ポリ手袋（S）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ポリ手袋（M）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ソフトニトリル手袋（S）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ソフトニトリル手袋（M）
+        </label>
+
+
+        <!-- ペーパー・ふきん -->
+
+        <div class="sub-title">
+            ペーパー・ふきん
+        </div>
+
+        <label>
+            <input type="checkbox" class="check">
+            キッチンタオル（キッチンペーパー）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ペーパータオル（スコッティ）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ふきん大判
+        </label>
+
+
+    </div>
+
+
+    <!-- =========================
+         1index.htmlへ戻る
+    ========================= -->
+
+    <a href="1index.html" class="back-link">
+        ← 前のページに戻る
+    </a>
+
+
+</div>
+
+
+<!-- =========================
+     JavaScript
+========================= -->
+
+<script>
+
+    /* =========================
+       チェック数を数える
+    ========================= */
+
+    const checks =
+        document.querySelectorAll(".check");
+
+    const count =
+        document.getElementById("count");
+
+    const total =
+        document.getElementById("total");
+
+
+    /* 全項目数 */
+
+    total.textContent =
+        checks.length;
+
+
+    /* =========================
+       チェック済みの数を更新
+    ========================= */
+
+    function updateCount() {
+
+        const checked =
+            document.querySelectorAll(
+                ".check:checked"
+            ).length;
+
+        count.textContent =
+            checked;
+
+    }
+
+
+    /* チェックが変更されたら更新 */
+
+    checks.forEach(check => {
+
+        check.addEventListener(
+            "change",
+            updateCount
+        );
+
+    });
+
+</script>
+
+
+</body>
+
+</html>

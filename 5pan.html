@@ -1,0 +1,2273 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🍞パン包材一覧</title>
+
+
+<style>
+ 
+
+ * {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: sans-serif;
+    background: #f8ead5;
+    margin: 0;
+    padding: 20px;
+    color: #5c4030;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: #fffaf2;
+    border-radius: 18px;
+    padding: 25px;
+    box-shadow: 0 6px 20px rgba(110, 75, 40, 0.12);
+}
+
+/* =========================
+   ヘッダー
+========================= */
+
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.title {
+    font-size: 25px;
+    font-weight: bold;
+    color: #555;
+}
+
+.memo-list-button {
+    border: none;
+    background: #fff;
+    color: #777;
+    padding: 9px 13px;
+    border-radius: 12px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    font-size: 13px;
+}
+
+.memo-list-button:hover {
+    background: #fff7fa;
+}
+/* =========================
+   月ボタン
+========================= */
+
+.month-buttons {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 9px;
+    margin-bottom: 18px;
+}
+
+.month-button {
+    border: none;
+    background: #fff;
+    color: #777;
+    padding: 12px 5px;
+    border-radius: 13px;
+    cursor: pointer;
+    font-size: 14px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+    transition: 0.2s;
+}
+
+.month-button:hover {
+    transform: translateY(-1px);
+}
+
+.month-button.active {
+    background: #e9a9bd;
+    color: white;
+    font-weight: bold;
+}
+
+
+
+/* =========================
+   操作ボタン
+========================= */
+
+.control-area {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin: 15px 0;
+}
+
+.control-button {
+    border: none;
+    background: white;
+    color: #666;
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    font-size: 13px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.07);
+}
+
+.control-button.active {
+    background: #d98ca7;
+    color: white;
+}
+
+
+/* =========================
+   進捗
+========================= */
+
+.progress {
+    text-align: center;
+    font-size: 14px;
+    color: #888;
+    margin-bottom: 18px;
+    display: none;
+}
+
+body.check-mode .progress {
+    display: block;
+}
+
+
+/* =========================
+   月コンテンツ
+========================= */
+
+.month-content {
+    display: none;
+}
+
+.month-content.active {
+    display: block;
+}
+
+
+/* =========================
+   ケーキカード
+========================= */
+
+.cake-card {
+    background: white;
+    border-radius: 18px;
+    padding: 18px;
+    margin-bottom: 18px;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.07);
+}
+
+.cake-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 13px;
+    padding-bottom: 9px;
+    border-bottom: 1px solid #f0dce3;
+}
+
+
+/* =========================
+   包材
+========================= */
+
+.material-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.material-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    background: #fff8fa;
+    padding: 9px 11px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.material-item input {
+    width: 18px;
+    height: 18px;
+    accent-color: #d98ca7;
+    cursor: pointer;
+    display: none;
+}
+
+body.check-mode .material-item input {
+    display: block;
+}
+
+body.check-mode .material-item.checked {
+    opacity: 0.55;
+    text-decoration: line-through;
+}
+
+
+/* =========================
+   メモ
+========================= */
+
+.memo-area {
+    display: none;
+    margin-top: 14px;
+    border-top: 1px dashed #e8cbd4;
+    padding-top: 13px;
+}
+
+body.memo-mode .memo-area {
+    display: block;
+}
+
+.memo-label {
+    font-size: 13px;
+    color: #999;
+    margin-bottom: 6px;
+}
+
+.memo-textarea {
+    width: 100%;
+    min-height: 75px;
+    resize: vertical;
+    border: 1px solid #ead4dc;
+    border-radius: 10px;
+    padding: 9px;
+    font-family: sans-serif;
+    font-size: 13px;
+    outline: none;
+    background: #fffafb;
+}
+
+.memo-textarea:focus {
+    border-color: #d99ab0;
+}
+
+.memo-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 7px;
+    margin-top: 7px;
+    flex-wrap: wrap;
+}
+
+.memo-save,
+.memo-discard,
+.memo-delete {
+    border: none;
+    border-radius: 9px;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.memo-save {
+    background: #dfa0b5;
+    color: white;
+}
+
+.memo-save:hover {
+    background: #d58fa7;
+}
+
+.memo-discard {
+    background: #eee;
+    color: #777;
+}
+
+.memo-discard:hover {
+    background: #e5e5e5;
+}
+
+.memo-delete {
+    background: #f1dfe4;
+    color: #a06f7e;
+}
+
+.memo-delete:hover {
+    background: #e8cbd4;
+}
+
+.saved-memo {
+    margin-top: 10px;
+    padding: 9px 11px;
+    border-radius: 9px;
+    background: #fff5f8;
+    color: #777;
+    font-size: 13px;
+    white-space: pre-wrap;
+    display: none;
+}
+
+
+/* =========================
+   データなし
+========================= */
+
+.empty-message {
+    background: white;
+    border-radius: 18px;
+    padding: 35px 20px;
+    text-align: center;
+    color: #999;
+    box-shadow: 0 3px 12px rgba(0,0,0,0.06);
+}
+
+
+/* =========================
+   戻る
+========================= */
+
+.back-area {
+    text-align: center;
+    margin: 25px 0 10px;
+}
+
+.back-link {
+    display: inline-block;
+    text-decoration: none;
+    color: #999;
+    background: white;
+    padding: 10px 18px;
+    border-radius: 12px;
+    font-size: 13px;
+    box-shadow: 0 2px 7px rgba(0,0,0,0.06);
+}
+
+
+/* =========================
+   メモ一覧モーダル
+========================= */
+
+.modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.35);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    z-index: 1000;
+}
+
+.modal.show {
+    display: flex;
+}
+
+.modal-box {
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.modal-title {
+    font-size: 20px;
+    font-weight: bold;
+    color: #666;
+}
+
+.modal-close {
+    border: none;
+    background: #f5f5f5;
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    cursor: pointer;
+    color: #777;
+}
+
+.memo-list-item {
+    background: #fff6f8;
+    border-radius: 12px;
+    padding: 12px;
+    margin-bottom: 10px;
+}
+
+.memo-list-month {
+    font-size: 12px;
+    color: #c58a9e;
+    margin-bottom: 4px;
+}
+
+.memo-list-cake {
+    font-weight: bold;
+    color: #666;
+    margin-bottom: 5px;
+}
+
+.memo-list-text {
+    font-size: 13px;
+    color: #777;
+    white-space: pre-wrap;
+}
+
+.no-memo {
+    text-align: center;
+    color: #aaa;
+    padding: 25px 10px;
+}
+
+</style>
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+<!-- =========================
+     ヘッダー
+========================= -->
+
+<div class="header">
+
+    <div class="title">
+        🍞パン包材一覧
+    </div>
+
+    <button
+        class="memo-list-button"
+        id="memoListButton">
+        📝 メモ帳リスト
+    </button>
+
+</div>
+
+<!-- =========================
+     月ボタン
+========================= -->
+
+<div class="month-buttons-area">
+
+    <div class="month-buttons">
+
+        <button class="month-button" data-month="1">1月</button>
+        <button class="month-button" data-month="2">2月</button>
+        <button class="month-button" data-month="3">3月</button>
+        <button class="month-button" data-month="4">4月</button>
+        <button class="month-button" data-month="5">5月</button>
+        <button class="month-button" data-month="6">6月</button>
+        <button class="month-button" data-month="7">7月</button>
+        <button class="month-button" data-month="8">8月</button>
+        <button class="month-button" data-month="9">9月</button>
+        <button class="month-button" data-month="10">10月</button>
+        <button class="month-button" data-month="11">11月</button>
+        <button class="month-button" data-month="12">12月</button>
+
+    </div>
+
+
+<!-- =========================
+     操作
+========================= -->
+
+<div class="control-area">
+
+    <button
+        class="control-button"
+        id="checkModeButton">
+        ☑️ チェックモード
+    </button>
+
+    <button
+        class="control-button"
+        id="memoModeButton">
+        📝 メモモード
+    </button>
+
+</div>
+
+
+<!-- =========================
+     進捗
+========================= -->
+
+<div
+    class="progress"
+    id="progress">
+    0 / 0 完了
+</div>
+
+<!-- ==================================================
+     1月
+================================================== -->
+
+<div class="month-content" id="month1">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- =========================
+     戻る
+========================= -->
+
+<div class="back-area">
+
+    <a
+        href="3confirm.html"
+        class="back-link">
+        ← 確認ページへ戻る
+    </a>
+
+</div>
+
+</div>
+
+
+<!-- =========================
+     メモ一覧
+========================= -->
+
+<div
+    class="modal"
+    id="memoModal">
+
+    <div class="modal-box">
+
+        <div class="modal-header">
+
+            <div class="modal-title">
+                📝 メモ帳リスト
+            </div>
+
+            <button
+                class="modal-close"
+                id="modalClose">
+                ×
+            </button>
+
+        </div>
+
+        <div id="memoList"></div>
+
+    </div>
+
+<!-- ==================================================
+     2月
+================================================= -->
+
+<div class="month-content" id="month2">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+   <!-- ==================================================
+     ３月
+================================================== -->
+
+<div class="month-content" id="month3">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+  
+<!-- ==================================================
+     ４月
+================================================== -->
+
+<div class="month-content" id="month4">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+     <!-- ==================================================
+     ５月
+================================================== -->
+
+<div class="month-content" id="month5">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+   <!-- ==================================================
+     6月
+================================================== -->
+
+<div class="month-content" id="month6">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+<!-- ==================================================
+     7月
+================================================== -->
+
+<div class="month-content" id="month7">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+<!-- ==================================================
+     8月
+================================================== -->
+
+<div class="month-content" id="month8">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+      <!-- ==================================================
+     9月
+================================================== -->
+
+<div class="month-content" id="month9">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo">
+</div>
+<!-- ==================================================
+     10月
+================================================== -->
+
+<div class="month-content" id="month10">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+     <!-- ==================================================
+     11月
+================================================== -->
+
+<div class="month-content" id="month11">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+<!-- =========================
+     戻る
+========================= -->
+
+<div class="back-area">
+
+    <a
+        href="3confirm.html"
+        class="back-link">
+        ← 確認ページへ戻る
+    </a>
+
+</div>
+
+
+<!-- ==================================================
+     12月
+================================================== -->
+
+<div class="month-content" id="month12">
+
+    <div class="cake-card">
+
+        <div class="cake-title">
+            🍞 〇〇〇
+        </div>
+
+        <div class="material-list">
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+            <label class="material-item">
+                <input type="checkbox">
+                <span>〇〇〇</span>
+            </label>
+
+        </div>
+
+        <div class="memo-area">
+
+            <div class="memo-label">
+                📝 メモ
+            </div>
+
+            <textarea
+                class="memo-textarea"
+                placeholder="このパンについてメモ…">
+            </textarea>
+
+            <div class="memo-buttons">
+
+                <button class="memo-discard">
+                    捨てる
+                </button>
+
+                <button class="memo-delete">
+                    🗑️ 削除
+                </button>
+
+                <button class="memo-save">
+                    保存
+                </button>
+
+            </div>
+
+            <div class="saved-memo"></div>
+
+<script>  
+
+/* ==================================================
+   基本
+================================================== */
+
+const monthButtons =
+    document.querySelectorAll(
+        ".month-button"
+    );
+
+const monthContents =
+    document.querySelectorAll(
+        ".month-content"
+    );
+
+const checkModeButton =
+    document.getElementById(
+        "checkModeButton"
+    );
+
+const memoModeButton =
+    document.getElementById(
+        "memoModeButton"
+    );
+
+const progress =
+    document.getElementById(
+        "progress"
+    );
+
+const memoListButton =
+    document.getElementById(
+        "memoListButton"
+    );
+
+const memoModal =
+    document.getElementById(
+        "memoModal"
+    );
+
+const modalClose =
+    document.getElementById(
+        "modalClose"
+    );
+
+const memoList =
+    document.getElementById(
+        "memoList"
+    );
+
+
+/* ==================================================
+   HTMLエスケープ
+================================================== */
+
+function escapeHtml(text) {
+
+    return String(text)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+
+}
+
+
+/* ==================================================
+   月を表示
+================================================== */
+
+function showMonth(month) {
+
+    const monthNumber =
+        Number(month);
+
+    if (
+        monthNumber < 1 ||
+        monthNumber > 12
+    ) {
+        return;
+    }
+
+
+    monthButtons.forEach(
+        button => {
+
+            const buttonMonth =
+                Number(
+                    button.dataset.month
+                );
+
+            button.classList.toggle(
+                "active",
+                buttonMonth === monthNumber
+            );
+
+        }
+    );
+
+
+    monthContents.forEach(
+        content => {
+
+            content.classList.toggle(
+                "active",
+                content.id ===
+                "month" + monthNumber
+            );
+
+        }
+    );
+
+
+    updateProgress();
+
+}
+
+
+/* ==================================================
+   月ボタン
+================================================== */
+
+monthButtons.forEach(
+    button => {
+
+        button.addEventListener(
+            "click",
+            function () {
+
+                const month =
+                    Number(
+                        this.dataset.month
+                    );
+
+
+                showMonth(month);
+
+
+                /*
+                   URLにも現在の月を保存
+                */
+
+                try {
+
+                    const newUrl =
+                        window.location.pathname +
+                        "?month=" +
+                        month;
+
+                    window.history.replaceState(
+                        null,
+                        "",
+                        newUrl
+                    );
+
+                } catch (error) {
+
+                    /*
+                       ローカル環境などで
+                       URL変更が使えない場合
+                    */
+
+                }
+
+            }
+        );
+
+    }
+);
+
+
+/* ==================================================
+   URLから月を取得
+================================================== */
+
+const urlParams =
+    new URLSearchParams(
+        window.location.search
+    );
+
+const urlMonth =
+    Number(
+        urlParams.get("month")
+    );
+
+
+if (
+    urlMonth >= 1 &&
+    urlMonth <= 12
+) {
+
+    showMonth(urlMonth);
+
+} else {
+
+    showMonth(1);
+
+}
+
+
+/* ==================================================
+   チェック用キー
+================================================== */
+
+function getCheckKey(
+    month,
+    cakeName,
+    index
+) {
+
+    return (
+        "cakeCheck_" +
+        month +
+        "_" +
+        cakeName +
+        "_" +
+        index
+    );
+
+}
+
+
+/* ==================================================
+   メモ用キー
+================================================== */
+
+function getMemoKey(
+    month,
+    cakeName
+) {
+
+    return (
+        "cakeMemo_" +
+        month +
+        "_" +
+        cakeName
+    );
+
+}
+
+
+/* ==================================================
+   チェック表示
+================================================== */
+
+function updateCheckboxStyle(
+    checkbox
+) {
+
+    const item =
+        checkbox.closest(
+            ".material-item"
+        );
+
+    if (!item) {
+        return;
+    }
+
+    item.classList.toggle(
+        "checked",
+        checkbox.checked
+    );
+
+}
+
+
+/* ==================================================
+   進捗
+================================================== */
+
+function updateProgress() {
+
+    const activeMonth =
+        document.querySelector(
+            ".month-content.active"
+        );
+
+    if (!activeMonth) {
+        return;
+    }
+
+
+    const checkboxes =
+        activeMonth.querySelectorAll(
+            ".material-item input[type='checkbox']"
+        );
+
+
+    let checked = 0;
+
+
+    checkboxes.forEach(
+        checkbox => {
+
+            if (checkbox.checked) {
+                checked++;
+            }
+
+        }
+    );
+
+
+    progress.textContent =
+        checked +
+        " / " +
+        checkboxes.length +
+        " 完了";
+
+}
+
+
+/* ==================================================
+   ケーキカード初期化
+================================================== */
+
+function initializeCakeCards() {
+
+    document
+        .querySelectorAll(
+            ".month-content"
+        )
+        .forEach(
+            monthContent => {
+
+                const month =
+                    monthContent.id.replace(
+                        "month",
+                        ""
+                    );
+
+
+                monthContent
+                    .querySelectorAll(
+                        ".cake-card"
+                    )
+                    .forEach(
+                        card => {
+
+                            const cakeTitle =
+                                card.querySelector(
+                                    ".cake-title"
+                                );
+
+
+                            if (!cakeTitle) {
+                                return;
+                            }
+
+
+                            const cakeName =
+                                cakeTitle.textContent
+                                    .trim();
+
+
+                            /* =====================
+                               チェック
+                            ===================== */
+
+                            const checkboxes =
+                                card.querySelectorAll(
+                                    ".material-item input[type='checkbox']"
+                                );
+
+
+                            checkboxes.forEach(
+                                (
+                                    checkbox,
+                                    index
+                                ) => {
+
+                                    const key =
+                                        getCheckKey(
+                                            month,
+                                            cakeName,
+                                            index
+                                        );
+
+
+                                    const saved =
+                                        localStorage.getItem(
+                                            key
+                                        );
+
+
+                                    checkbox.checked =
+                                        saved === "true";
+
+
+                                    updateCheckboxStyle(
+                                        checkbox
+                                    );
+
+
+                                    checkbox.addEventListener(
+                                        "change",
+                                        function () {
+
+                                            localStorage.setItem(
+                                                key,
+                                                this.checked
+                                            );
+
+
+                                            updateCheckboxStyle(
+                                                this
+                                            );
+
+
+                                            updateProgress();
+
+                                        }
+                                    );
+
+                                }
+                            );
+
+
+                            /* =====================
+                               メモ
+                            ===================== */
+
+                            const memoKey =
+                                getMemoKey(
+                                    month,
+                                    cakeName
+                                );
+
+
+                            const textarea =
+                                card.querySelector(
+                                    ".memo-textarea"
+                                );
+
+
+                            const savedMemo =
+                                card.querySelector(
+                                    ".saved-memo"
+                                );
+
+
+                            const saveButton =
+                                card.querySelector(
+                                    ".memo-save"
+                                );
+
+
+                            const discardButton =
+                                card.querySelector(
+                                    ".memo-discard"
+                                );
+
+
+                            const deleteButton =
+                                card.querySelector(
+                                    ".memo-delete"
+                                );
+
+
+                            /*
+                               メモ欄がないカードは
+                               メモ処理をしない
+                            */
+
+                            if (
+                                !textarea ||
+                                !savedMemo ||
+                                !saveButton ||
+                                !discardButton
+                            ) {
+                                return;
+                            }
+
+
+                            /* =====================
+                               保存済みメモ読み込み
+                            ===================== */
+
+                            const savedText =
+                                localStorage.getItem(
+                                    memoKey
+                                );
+
+
+                            if (savedText) {
+
+                                textarea.value =
+                                    savedText;
+
+
+                                savedMemo.textContent =
+                                    savedText;
+
+
+                                savedMemo.style.display =
+                                    "block";
+
+                            } else {
+
+                                textarea.value =
+                                    "";
+
+                                savedMemo.textContent =
+                                    "";
+
+                                savedMemo.style.display =
+                                    "none";
+
+                            }
+
+
+                            /* =====================
+                               保存
+                            ===================== */
+
+                            saveButton.addEventListener(
+                                "click",
+                                function () {
+
+                                    const text =
+                                        textarea.value.trim();
+
+
+                                    /*
+                                       空欄で保存した場合は
+                                       保存済みメモを削除
+                                    */
+
+                                    if (
+                                        text === ""
+                                    ) {
+
+                                        localStorage.removeItem(
+                                            memoKey
+                                        );
+
+
+                                        savedMemo.textContent =
+                                            "";
+
+
+                                        savedMemo.style.display =
+                                            "none";
+
+
+                                        return;
+
+                                    }
+
+
+                                    localStorage.setItem(
+                                        memoKey,
+                                        text
+                                    );
+
+
+                                    savedMemo.textContent =
+                                        text;
+
+
+                                    savedMemo.style.display =
+                                        "block";
+
+
+                                    /*
+                                       メモ一覧が開いている場合
+                                       すぐ更新
+                                    */
+
+                                    if (
+                                        memoModal &&
+                                        memoModal.classList.contains(
+                                            "show"
+                                        )
+                                    ) {
+
+                                        buildMemoList();
+
+                                    }
+
+                                }
+                            );
+
+
+                            /* =====================
+                               捨てる
+                            ===================== */
+
+                            discardButton.addEventListener(
+                                "click",
+                                function () {
+
+                                    /*
+                                       保存済みメモを残したまま
+                                       入力中の内容だけ戻す
+                                    */
+
+                                    const saved =
+                                        localStorage.getItem(
+                                            memoKey
+                                        );
+
+
+                                    textarea.value =
+                                        saved || "";
+
+                                }
+                            );
+
+
+                            /* =====================
+                               削除
+                            ===================== */
+
+                            if (deleteButton) {
+
+                                deleteButton.addEventListener(
+                                    "click",
+                                    function () {
+
+                                        const saved =
+                                            localStorage.getItem(
+                                                memoKey
+                                            );
+
+
+                                        if (!saved) {
+
+                                            alert(
+                                                "保存されているメモはありません。"
+                                            );
+
+                                            return;
+
+                                        }
+
+
+                                        const ok =
+                                            confirm(
+                                                "この保存済みメモを削除しますか？"
+                                            );
+
+
+                                        if (!ok) {
+                                            return;
+                                        }
+
+
+                                        /*
+                                           LocalStorageから
+                                           完全削除
+                                        */
+
+                                        localStorage.removeItem(
+                                            memoKey
+                                        );
+
+
+                                        /*
+                                           画面から削除
+                                        */
+
+                                        textarea.value =
+                                            "";
+
+                                        savedMemo.textContent =
+                                            "";
+
+                                        savedMemo.style.display =
+                                            "none";
+
+
+                                        /*
+                                           メモ一覧が開いていれば
+                                           その場で更新
+                                        */
+
+                                        if (
+                                            memoModal &&
+                                            memoModal.classList.contains(
+                                                "show"
+                                            )
+                                        ) {
+
+                                            buildMemoList();
+
+                                        }
+
+                                    }
+                                );
+
+                            }
+
+                        }
+                    );
+
+            }
+        );
+
+}
+
+
+/* ==================================================
+   チェックモード
+================================================== */
+
+checkModeButton.addEventListener(
+    "click",
+    function () {
+
+        document.body.classList.toggle(
+            "check-mode"
+        );
+
+
+        const active =
+            document.body.classList.contains(
+                "check-mode"
+            );
+
+
+        this.classList.toggle(
+            "active",
+            active
+        );
+
+
+        updateProgress();
+
+    }
+);
+
+
+/* ==================================================
+   メモモード
+================================================== */
+
+memoModeButton.addEventListener(
+    "click",
+    function () {
+
+        document.body.classList.toggle(
+            "memo-mode"
+        );
+
+
+        const active =
+            document.body.classList.contains(
+                "memo-mode"
+            );
+
+
+        this.classList.toggle(
+            "active",
+            active
+        );
+
+    }
+);
+
+
+/* ==================================================
+   メモ一覧を作成
+================================================== */
+
+function buildMemoList() {
+
+    memoList.innerHTML = "";
+
+
+    let memoCount = 0;
+
+
+    document
+        .querySelectorAll(
+            ".month-content"
+        )
+        .forEach(
+            monthContent => {
+
+                const month =
+                    monthContent.id.replace(
+                        "month",
+                        ""
+                    );
+
+
+                monthContent
+                    .querySelectorAll(
+                        ".cake-card"
+                    )
+                    .forEach(
+                        card => {
+
+                            const title =
+                                card.querySelector(
+                                    ".cake-title"
+                                );
+
+
+                            if (!title) {
+                                return;
+                            }
+
+
+                            const cakeName =
+                                title.textContent
+                                    .trim();
+
+
+                            const key =
+                                getMemoKey(
+                                    month,
+                                    cakeName
+                                );
+
+
+                            const memo =
+                                localStorage.getItem(
+                                    key
+                                );
+
+
+                            if (!memo) {
+                                return;
+                            }
+
+
+                            memoCount++;
+
+
+                            const item =
+                                document.createElement(
+                                    "div"
+                                );
+
+
+                            item.className =
+                                "memo-list-item";
+
+
+                            item.innerHTML =
+
+                                '<div class="memo-list-month">' +
+                                escapeHtml(month) +
+                                '月</div>' +
+
+                                '<div class="memo-list-cake">' +
+                                escapeHtml(cakeName) +
+                                '</div>' +
+
+                                '<div class="memo-list-text">' +
+                                escapeHtml(memo) +
+                                '</div>';
+
+
+                            memoList.appendChild(
+                                item
+                            );
+
+                        }
+                    );
+
+            }
+        );
+
+
+    if (memoCount === 0) {
+
+        memoList.innerHTML =
+            '<div class="no-memo">' +
+            '保存されているメモはありません。' +
+            '</div>';
+
+    }
+
+}
+
+
+/* ==================================================
+   メモ一覧を開く
+================================================== */
+
+memoListButton.addEventListener(
+    "click",
+    function () {
+
+        buildMemoList();
+
+        memoModal.classList.add(
+            "show"
+        );
+
+    }
+);
+
+
+/* ==================================================
+   モーダルを閉じる
+================================================== */
+
+modalClose.addEventListener(
+    "click",
+    function () {
+
+        memoModal.classList.remove(
+            "show"
+        );
+
+    }
+);
+
+
+/* ==================================================
+   背景をクリックして閉じる
+================================================== */
+
+memoModal.addEventListener(
+    "click",
+    function (event) {
+
+        if (
+            event.target === memoModal
+        ) {
+
+            memoModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   ESCで閉じる
+================================================== */
+
+document.addEventListener(
+    "keydown",
+    function (event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            memoModal.classList.remove(
+                "show"
+            );
+
+        }
+
+    }
+);
+
+
+/* ==================================================
+   初期化
+================================================== */
+
+initializeCakeCards();
+
+updateProgress();
+
+
+</script>
+
+
+
+
+</body>
+</html>
+

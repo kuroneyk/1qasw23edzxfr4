@@ -1,0 +1,1489 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>レッスン確認</title>
+
+    <style>
+
+        /* =========================
+           全体
+        ========================= */
+
+        body {
+            font-family: sans-serif;
+            background: #f7f4f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           タイトル
+        ========================= */
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           確認する月
+           メモ帳風
+        ========================= */
+
+        .month-memo {
+            width: fit-content;
+            min-width: 210px;
+
+            background: #fffdf5;
+
+            padding: 15px 18px;
+
+            margin-bottom: 20px;
+
+            border-radius: 4px;
+
+            box-shadow:
+                2px 3px 8px rgba(0, 0, 0, 0.12);
+
+            position: relative;
+
+            transform: rotate(-1deg);
+        }
+
+
+        /* メモ帳のクリップ風 */
+
+        .month-memo::before {
+            content: "";
+
+            position: absolute;
+
+            width: 45px;
+            height: 8px;
+
+            background: #d8d2ce;
+
+            top: -4px;
+            left: 50%;
+
+            transform: translateX(-50%);
+
+            border-radius: 5px;
+        }
+
+
+        .month-memo-title {
+            font-size: 13px;
+
+            color: #777;
+
+            margin-bottom: 6px;
+        }
+
+
+        .month-memo-text {
+            font-size: 18px;
+
+            font-weight: bold;
+
+            color: #444;
+
+            white-space: nowrap;
+        }
+
+
+        /* =========================
+           カレンダー
+        ========================= */
+
+        .calendar-box {
+            background: white;
+
+            padding: 20px;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+
+            overflow: hidden;
+        }
+
+
+        /* =========================
+           カレンダー月タイトル
+        ========================= */
+
+        .calendar-header {
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            margin-bottom: 10px;
+        }
+
+
+        .month-arrow {
+            width: 40px;
+            height: 40px;
+
+            border: none;
+
+            background: #f7f4f2;
+
+            border-radius: 50%;
+
+            font-size: 22px;
+
+            color: #555;
+
+            cursor: pointer;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: center;
+
+            transition: background 0.2s,
+                        transform 0.2s;
+        }
+
+
+        .month-arrow:hover {
+            background: #eee8e4;
+
+            transform: scale(1.05);
+        }
+
+
+        .calendar-title {
+            text-align: center;
+
+            font-size: 20px;
+
+            font-weight: bold;
+
+            flex: 1;
+        }
+
+
+        /* =========================
+           カレンダーのスライド部分
+        ========================= */
+
+        .calendar-slide-wrapper {
+            position: relative;
+
+            width: 100%;
+
+            overflow: hidden;
+        }
+
+
+        .calendar-slide {
+            width: 100%;
+
+            transition:
+                transform 0.3s ease,
+                opacity 0.3s ease;
+        }
+
+
+        .calendar-slide.slide-left {
+            transform: translateX(-100%);
+            opacity: 0;
+        }
+
+
+        .calendar-slide.slide-right {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+
+
+        /* =========================
+           今日
+        ========================= */
+
+        .today-text {
+            text-align: center;
+
+            font-size: 15px;
+
+            margin-bottom: 15px;
+
+            color: #555;
+        }
+
+
+        /* =========================
+           カレンダー
+        ========================= */
+
+        .calendar {
+            width: 100%;
+
+            border-collapse: collapse;
+
+            table-layout: fixed;
+        }
+
+
+        /* 曜日の見出し */
+
+        .calendar th {
+            padding: 8px 0;
+
+            font-size: 14px;
+
+            font-weight: normal;
+
+            border: 1px solid #e5e0dc;
+
+            background: #faf8f7;
+        }
+
+
+        /* 日付のマス */
+
+        .calendar td {
+            text-align: center;
+
+            height: 45px;
+
+            font-size: 15px;
+
+            position: relative;
+
+            border: 1px solid #e5e0dc;
+
+            cursor: pointer;
+
+            transition: background 0.2s;
+        }
+
+
+        .calendar td:hover {
+            background: #f5f1ef;
+        }
+
+
+        /* 空白セル */
+
+        .calendar td.empty {
+            cursor: default;
+
+            background: #fff;
+        }
+
+
+        .calendar td.empty:hover {
+            background: #fff;
+        }
+
+
+        /* =========================
+           今日
+        ========================= */
+
+        .calendar td.today {
+            font-weight: bold;
+        }
+
+
+        /* 今日の赤丸 */
+
+        .calendar td.today::after {
+            content: "";
+
+            position: absolute;
+
+            width: 32px;
+            height: 32px;
+
+            border: 2px solid red;
+
+            border-radius: 50%;
+
+            left: 50%;
+            top: 50%;
+
+            transform:
+                translate(-50%, -50%);
+
+            pointer-events: none;
+        }
+
+
+        /* =========================
+           次の週の金土日
+        ========================= */
+
+        .calendar td.highlight {
+            background: #fff0b8;
+        }
+
+
+        /* =========================
+           選択した日付
+        ========================= */
+
+        .calendar td.selected {
+            background: #f3e6ff;
+        }
+
+
+        /* =========================
+           選択した日付の確認エリア
+        ========================= */
+
+        .date-action {
+            display: none;
+
+            background: white;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            margin-bottom: 20px;
+
+            text-align: center;
+        }
+
+
+        .date-action.show {
+            display: block;
+        }
+
+
+        #selectedDateText {
+            font-size: 16px;
+
+            font-weight: bold;
+
+            margin-bottom: 12px;
+        }
+
+
+        .confirm-button {
+            display: inline-block;
+
+            padding: 10px 22px;
+
+            background: #fff0b8;
+
+            color: #444;
+
+            text-decoration: none;
+
+            border-radius: 10px;
+
+            font-size: 15px;
+
+            font-weight: bold;
+        }
+
+
+        .confirm-button:hover {
+            background: #ffe68a;
+        }
+
+
+        /* =========================
+           確認済み
+        ========================= */
+
+        .progress {
+            text-align: center;
+
+            font-weight: bold;
+
+            margin: 15px 0;
+        }
+
+
+        /* =========================
+           カテゴリー
+        ========================= */
+
+        .category {
+            background: white;
+
+            padding: 18px;
+
+            border-radius: 15px;
+
+            margin-bottom: 15px;
+        }
+
+
+        .category h2 {
+            margin-top: 0;
+
+            margin-bottom: 12px;
+        }
+
+
+        /* 備品ページへのリンク */
+
+        .category-link {
+            text-decoration: none;
+
+            color: inherit;
+
+            display: block;
+        }
+
+
+        /* =========================
+           チェックボックス
+        ========================= */
+
+        label {
+            display: block;
+
+            padding: 8px 5px;
+
+            font-size: 16px;
+        }
+
+
+        input[type="checkbox"] {
+            width: 20px;
+
+            height: 20px;
+
+            vertical-align: middle;
+
+            margin-right: 10px;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================
+         タイトル
+    ========================= -->
+
+    <h1>📚 レッスン確認</h1>
+
+
+    <!-- =========================
+         確認する月
+         自動表示・メモ帳風
+    ========================= -->
+
+    <div class="month-memo">
+
+        <div class="month-memo-title">
+            📝 確認する月
+        </div>
+
+
+        <div
+            class="month-memo-text"
+            id="monthMemo">
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         カレンダー
+    ========================= -->
+
+    <div class="calendar-box">
+
+
+        <!-- 月移動 -->
+
+        <div class="calendar-header">
+
+            <button
+                class="month-arrow"
+                id="prevMonth"
+                type="button">
+
+                ←
+
+            </button>
+
+
+            <div
+                class="calendar-title"
+                id="calendarTitle">
+            </div>
+
+
+            <button
+                class="month-arrow"
+                id="nextMonth"
+                type="button">
+
+                →
+
+            </button>
+
+        </div>
+
+
+        <!-- スライドする部分 -->
+
+        <div class="calendar-slide-wrapper">
+
+            <div
+                class="calendar-slide"
+                id="calendarSlide">
+
+
+                <!-- 今日 -->
+
+                <div class="today-text">
+
+                    今日：
+                    <span id="todayText"></span>
+
+                </div>
+
+
+                <!-- カレンダー -->
+
+                <table class="calendar">
+
+                    <thead>
+
+                        <tr>
+
+                            <th>日</th>
+                            <th>月</th>
+                            <th>火</th>
+                            <th>水</th>
+                            <th>木</th>
+                            <th>金</th>
+                            <th>土</th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody
+                        id="calendarBody">
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================
+         選択した日付の確認
+    ========================= -->
+
+    <div
+        id="dateAction"
+        class="date-action">
+
+
+        <div
+            id="selectedDateText">
+        </div>
+
+
+        <a
+            id="confirmButton"
+            href="#"
+            class="confirm-button">
+
+            確認ページへ →
+
+        </a>
+
+    </div>
+
+
+    <!-- =========================
+         確認済み
+    ========================= -->
+
+    <div class="progress">
+
+        確認済み：
+
+        <span id="count">0</span>
+
+        /
+
+        <span id="total">0</span>
+
+    </div>
+
+
+    <!-- =========================
+         パン
+    ========================= -->
+
+    <div class="category">
+
+        <h2>🥖 パン</h2>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            通常メニューを確認
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            基礎を確認
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            マスターを確認
+
+        </label>
+
+    </div>
+
+
+    <!-- =========================
+         ケーキ
+    ========================= -->
+
+    <div class="category">
+
+        <h2>🍰 ケーキ</h2>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            通常メニューを確認
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            シーズンメニューを確認
+
+        </label>
+
+
+        <label>
+
+            <input
+                type="checkbox"
+                class="check">
+
+            レシピ・包材の変更を確認
+
+        </label>
+
+    </div>
+
+
+    <!-- =========================
+         備品
+    ========================= -->
+
+    <div class="category">
+
+        <a
+            href="2supplies.html"
+            class="category-link">
+
+            <h2>🧹 毎週確認する備品</h2>
+
+        </a>
+
+    </div>
+
+
+</div>
+
+
+<script>
+
+
+    /* ==================================================
+       今日の日付
+    ================================================== */
+
+    const today = new Date();
+
+
+    const todayYear =
+        today.getFullYear();
+
+
+    const todayMonth =
+        today.getMonth();
+
+
+    const todayDate =
+        today.getDate();
+
+
+    /* ==================================================
+       現在表示している年月
+    ================================================== */
+
+    let displayYear =
+        todayYear;
+
+
+    let displayMonth =
+        todayMonth;
+
+
+    /* ==================================================
+       今日の日付を表示
+    ================================================== */
+
+    document.getElementById(
+        "todayText"
+    ).textContent =
+        `${todayYear}年${todayMonth + 1}月${todayDate}日`;
+
+
+    /* ==================================================
+       確認する月を自動表示
+    ================================================== */
+
+    const checkMonth =
+        todayMonth + 1;
+
+
+    const lessonMonth =
+        (todayMonth + 1) % 12 + 1;
+
+
+    let lessonText;
+
+
+    if (checkMonth === 12) {
+
+        lessonText =
+            "翌年1月レッスン";
+
+    } else {
+
+        lessonText =
+            `${lessonMonth}月レッスン`;
+
+    }
+
+
+    document.getElementById(
+        "monthMemo"
+    ).textContent =
+        `${checkMonth}月確認 → ${lessonText}`;
+
+
+    /* ==================================================
+       カレンダーを作る
+    ================================================== */
+
+    function createCalendar(
+        calendarYear,
+        calendarMonth
+    ) {
+
+
+        const calendarBody =
+            document.getElementById(
+                "calendarBody"
+            );
+
+
+        const calendarTitle =
+            document.getElementById(
+                "calendarTitle"
+            );
+
+
+        /* 一度カレンダーを空にする */
+
+        calendarBody.innerHTML = "";
+
+
+        /* 月タイトル */
+
+        calendarTitle.textContent =
+            `${calendarYear}年${calendarMonth + 1}月`;
+
+
+        /* 1日の曜日 */
+
+        const firstDay =
+            new Date(
+                calendarYear,
+                calendarMonth,
+                1
+            ).getDay();
+
+
+        /* 月末の日付 */
+
+        const lastDate =
+            new Date(
+                calendarYear,
+                calendarMonth + 1,
+                0
+            ).getDate();
+
+
+        /* 行を作成 */
+
+        let row =
+            document.createElement("tr");
+
+
+        /* ==================================================
+           1日より前の空白
+        ================================================== */
+
+        for (
+            let i = 0;
+            i < firstDay;
+            i++
+        ) {
+
+            const emptyCell =
+                document.createElement("td");
+
+
+            emptyCell.classList.add(
+                "empty"
+            );
+
+
+            row.appendChild(
+                emptyCell
+            );
+
+        }
+
+
+        /* ==================================================
+           日付
+        ================================================== */
+
+        for (
+            let day = 1;
+            day <= lastDate;
+            day++
+        ) {
+
+
+            const cell =
+                document.createElement("td");
+
+
+            cell.textContent =
+                day;
+
+
+            /* この日の年月日 */
+
+            const cellDate =
+                new Date(
+                    calendarYear,
+                    calendarMonth,
+                    day
+                );
+
+
+            /* ==================================================
+               今日なら赤丸
+            ================================================== */
+
+            if (
+                calendarYear === todayYear &&
+                calendarMonth === todayMonth &&
+                day === todayDate
+            ) {
+
+                cell.classList.add(
+                    "today"
+                );
+
+            }
+
+
+            /* ==================================================
+               日付クリック
+            ================================================== */
+
+            cell.addEventListener(
+                "click",
+                function () {
+
+
+                    /* 確認エリア */
+
+                    const dateAction =
+                        document.getElementById(
+                            "dateAction"
+                        );
+
+
+                    const selectedDateText =
+                        document.getElementById(
+                            "selectedDateText"
+                        );
+
+
+                    const confirmButton =
+                        document.getElementById(
+                            "confirmButton"
+                        );
+
+
+                    /* 曜日 */
+
+                    const weekNames = [
+
+                        "日曜日",
+                        "月曜日",
+                        "火曜日",
+                        "水曜日",
+                        "木曜日",
+                        "金曜日",
+                        "土曜日"
+
+                    ];
+
+
+                    const weekName =
+                        weekNames[
+                            cellDate.getDay()
+                        ];
+
+
+                    /* 選択日を表示 */
+
+                    selectedDateText.textContent =
+                        `${calendarYear}年${calendarMonth + 1}月${day}日（${weekName}）で確認する。`;
+
+
+                    /* 3confirm.html */
+
+                    confirmButton.href =
+                        `3confirm.html?date=${calendarYear}-${String(calendarMonth + 1).padStart(2, "0")}-${String(day).padStart(2, "0")}`;
+
+
+                    /* 確認カード表示 */
+
+                    dateAction.classList.add(
+                        "show"
+                    );
+
+
+                    /* ==================================================
+                       黄色を一度消す
+                    ================================================== */
+
+                    document
+                        .querySelectorAll(
+                            ".calendar td.highlight"
+                        )
+                        .forEach(td => {
+
+                            td.classList.remove(
+                                "highlight"
+                            );
+
+                        });
+
+
+                    /* 選択状態を消す */
+
+                    document
+                        .querySelectorAll(
+                            ".calendar td.selected"
+                        )
+                        .forEach(td => {
+
+                            td.classList.remove(
+                                "selected"
+                            );
+
+                        });
+
+
+                    /* 選択した日を色付け */
+
+                    cell.classList.add(
+                        "selected"
+                    );
+
+
+                    /* ==================================================
+                       次の週の金土日
+                    ================================================== */
+
+                    const weekDay =
+                        cellDate.getDay();
+
+
+                    /* 月〜金の場合 */
+
+                    if (
+                        weekDay >= 1 &&
+                        weekDay <= 5
+                    ) {
+
+
+                        const daysUntilNextFriday =
+                            (5 - weekDay + 7) % 7 + 7;
+
+
+                        /* 金曜日 */
+
+                        const friday =
+                            new Date(
+                                cellDate
+                            );
+
+
+                        friday.setDate(
+                            friday.getDate()
+                            +
+                            daysUntilNextFriday
+                        );
+
+
+                        highlightDate(
+                            friday,
+                            calendarYear,
+                            calendarMonth
+                        );
+
+
+                        /* 土曜日 */
+
+                        const saturday =
+                            new Date(
+                                friday
+                            );
+
+
+                        saturday.setDate(
+                            saturday.getDate() + 1
+                        );
+
+
+                        highlightDate(
+                            saturday,
+                            calendarYear,
+                            calendarMonth
+                        );
+
+
+                        /* 日曜日 */
+
+                        const sunday =
+                            new Date(
+                                friday
+                            );
+
+
+                        sunday.setDate(
+                            sunday.getDate() + 2
+                        );
+
+
+                        highlightDate(
+                            sunday,
+                            calendarYear,
+                            calendarMonth
+                        );
+
+                    }
+
+                }
+            );
+
+
+            row.appendChild(
+                cell
+            );
+
+
+            /* 土曜日まで来たら次の行 */
+
+            if (
+                (firstDay + day) % 7 === 0
+            ) {
+
+                calendarBody.appendChild(
+                    row
+                );
+
+
+                row =
+                    document.createElement("tr");
+
+            }
+
+        }
+
+
+        /* ==================================================
+           最後の週
+        ================================================== */
+
+        if (
+            row.children.length > 0
+        ) {
+
+            /* 最後の行を7マスにする */
+
+            while (
+                row.children.length < 7
+            ) {
+
+                const emptyCell =
+                    document.createElement("td");
+
+
+                emptyCell.classList.add(
+                    "empty"
+                );
+
+
+                row.appendChild(
+                    emptyCell
+                );
+
+            }
+
+
+            calendarBody.appendChild(
+                row
+            );
+
+        }
+
+    }
+
+
+    /* ==================================================
+       指定した日付を黄色にする
+    ================================================== */
+
+    function highlightDate(
+        targetDate,
+        currentYear,
+        currentMonth
+    ) {
+
+
+        /* 今表示している月以外なら何もしない */
+
+        if (
+            targetDate.getFullYear()
+            !== currentYear
+            ||
+            targetDate.getMonth()
+            !== currentMonth
+        ) {
+
+            return;
+
+        }
+
+
+        const targetDay =
+            targetDate.getDate();
+
+
+        document
+            .querySelectorAll(
+                ".calendar td"
+            )
+            .forEach(td => {
+
+                if (
+                    td.textContent
+                    == targetDay
+                ) {
+
+                    td.classList.add(
+                        "highlight"
+                    );
+
+                }
+
+            });
+
+    }
+
+
+    /* ==================================================
+       月を切り替える
+    ================================================== */
+
+    function changeMonth(
+        direction
+    ) {
+
+
+        const calendarSlide =
+            document.getElementById(
+                "calendarSlide"
+            );
+
+
+        /* アニメーション */
+
+        if (direction === 1) {
+
+            calendarSlide.classList.add(
+                "slide-left"
+            );
+
+        } else {
+
+            calendarSlide.classList.add(
+                "slide-right"
+            );
+
+        }
+
+
+        /* 少し待ってから月を変更 */
+
+        setTimeout(
+            function () {
+
+
+                displayMonth +=
+                    direction;
+
+
+                /* 年をまたぐ */
+
+                if (
+                    displayMonth > 11
+                ) {
+
+                    displayMonth = 0;
+
+                    displayYear++;
+
+                }
+
+
+                if (
+                    displayMonth < 0
+                ) {
+
+                    displayMonth = 11;
+
+                    displayYear--;
+
+                }
+
+
+                /* カレンダー作成 */
+
+                createCalendar(
+                    displayYear,
+                    displayMonth
+                );
+
+
+                /* 元の位置へ */
+
+                if (
+                    direction === 1
+                ) {
+
+                    calendarSlide.style.transform =
+                        "translateX(100%)";
+
+                } else {
+
+                    calendarSlide.style.transform =
+                        "translateX(-100%)";
+
+                }
+
+
+                calendarSlide.classList.remove(
+                    "slide-left",
+                    "slide-right"
+                );
+
+
+                /* 強制的に再描画 */
+
+                void calendarSlide.offsetWidth;
+
+
+                /* 中央へスライド */
+
+                calendarSlide.style.transform =
+                    "translateX(0)";
+
+
+            },
+            300
+        );
+
+    }
+
+
+    /* ==================================================
+       前月ボタン
+    ================================================== */
+
+    document.getElementById(
+        "prevMonth"
+    ).addEventListener(
+        "click",
+        function () {
+
+            changeMonth(-1);
+
+        }
+    );
+
+
+    /* ==================================================
+       次月ボタン
+    ================================================== */
+
+    document.getElementById(
+        "nextMonth"
+    ).addEventListener(
+        "click",
+        function () {
+
+            changeMonth(1);
+
+        }
+    );
+
+
+    /* ==================================================
+       最初のカレンダーを表示
+    ================================================== */
+
+    createCalendar(
+        displayYear,
+        displayMonth
+    );
+
+
+    /* ==================================================
+       チェック数
+    ================================================== */
+
+    const checks =
+        document.querySelectorAll(
+            ".check"
+        );
+
+
+    const count =
+        document.getElementById(
+            "count"
+        );
+
+
+    const total =
+        document.getElementById(
+            "total"
+        );
+
+
+    total.textContent =
+        checks.length;
+
+
+    function updateCount() {
+
+        const checked =
+            document.querySelectorAll(
+                ".check:checked"
+            ).length;
+
+
+        count.textContent =
+            checked;
+
+    }
+
+
+    checks.forEach(
+        check => {
+
+            check.addEventListener(
+                "change",
+                updateCount
+            );
+
+        }
+    );
+
+
+</script>
+
+
+</body>
+
+</html>

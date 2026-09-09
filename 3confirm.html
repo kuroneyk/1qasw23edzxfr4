@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>確認ページ</title>
+
+    <style>
+
+        /* =========================
+           全体
+        ========================= */
+
+        body {
+            font-family: sans-serif;
+            background: #f7f4f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           タイトル
+        ========================= */
+
+        h1 {
+            font-size: 24px;
+            margin-bottom: 20px;
+        }
+
+
+        /* =========================
+           選択した日付
+        ========================= */
+
+        .selected-date {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+        }
+
+
+        /* =========================
+           月のカード
+        ========================= */
+
+        .month-card {
+            background: white;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+
+        .month-card h2 {
+            margin: 0 0 15px;
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           すべて見る
+        ========================= */
+
+        .all-button {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            padding: 14px 16px;
+            margin-bottom: 12px;
+
+            background: #fff0b8;
+            color: #444;
+
+            text-decoration: none;
+            border-radius: 10px;
+
+            font-weight: bold;
+            box-sizing: border-box;
+        }
+
+        .all-button:hover {
+            background: #ffe68a;
+        }
+
+        .arrow {
+            font-size: 20px;
+        }
+
+
+        /* =========================
+           料理・パン・ケーキ
+        ========================= */
+
+        .category-button {
+            display: block;
+
+            padding: 10px 15px;
+            margin-bottom: 8px;
+
+            background: #f7f4f2;
+            color: #555;
+
+            text-decoration: none;
+            border-radius: 8px;
+
+            text-align: center;
+        }
+
+        .category-button:hover {
+            background: #eee8e4;
+        }
+
+        .category-button:last-child {
+            margin-bottom: 0;
+        }
+
+
+        /* =========================
+           戻る
+        ========================= */
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 25px;
+
+            color: #666;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            color: #222;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- タイトル -->
+
+    <h1>📋 確認ページ</h1>
+
+
+    <!-- 選択した日付 -->
+
+    <div class="selected-date" id="selectedDate">
+        日付を選択してください
+    </div>
+
+
+    <!-- 選択した月 -->
+
+    <div class="month-card">
+
+        <h2 id="currentMonth">
+            今月の包材
+        </h2>
+
+        <a href="#" class="all-button">
+
+            <span>すべて見る</span>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="category-button">
+            料理
+        </a>
+
+        <a href="5pan.html" class="category-button">
+            パン
+        </a>
+
+        <!-- 今月のケーキ -->
+
+        <a href="#" id="currentCake" class="category-button">
+            ケーキ
+        </a>
+
+    </div>
+
+
+    <!-- 翌月 -->
+
+    <div class="month-card">
+
+        <h2 id="nextMonth">
+            翌月の包材
+        </h2>
+
+        <a href="#" class="all-button">
+
+            <span>すべて見る</span>
+
+            <span class="arrow">→</span>
+
+        </a>
+
+
+        <a href="#" class="category-button">
+            料理
+        </a>
+
+        <a href="5pan.html" class="category-button">
+            パン
+        </a>
+
+        <!-- 翌月のケーキ -->
+
+        <a href="#" id="4Cake.html" class="category-button">
+            ケーキ
+        </a>
+
+    </div>
+
+
+    <!-- カレンダーに戻る -->
+
+    <a href="1index.html" class="back-button">
+        ← カレンダーに戻る
+    </a>
+
+
+</div>
+
+
+<script>
+
+    /* =========================
+       URLから選択した日付を取得
+    ========================= */
+
+    const params =
+        new URLSearchParams(
+            window.location.search
+        );
+
+    const dateString =
+        params.get("date");
+
+
+    if (dateString) {
+
+        /*
+           YYYY-MM-DDを
+           年・月・日に分けて取得
+        */
+
+        const parts =
+            dateString.split("-");
+
+        const year =
+            Number(parts[0]);
+
+        const month =
+            Number(parts[1]) - 1;
+
+        const day =
+            Number(parts[2]);
+
+
+        /*
+           曜日を取得
+        */
+
+        const selectedDate =
+            new Date(
+                year,
+                month,
+                day
+            );
+
+
+        const weekNames = [
+            "日曜日",
+            "月曜日",
+            "火曜日",
+            "水曜日",
+            "木曜日",
+            "金曜日",
+            "土曜日"
+        ];
+
+
+        const weekName =
+            weekNames[
+                selectedDate.getDay()
+            ];
+
+
+        /*
+           選択した日付を表示
+        */
+
+        document.getElementById(
+            "selectedDate"
+        ).textContent =
+            `${month + 1}月${day}日（${weekName}）で確認`;
+
+
+        /*
+           選択した月
+        */
+
+        document.getElementById(
+            "currentMonth"
+        ).textContent =
+            `${month + 1}月の包材`;
+
+
+        /*
+           翌月
+        */
+
+        const nextMonthDate =
+            new Date(
+                year,
+                month + 1,
+                1
+            );
+
+
+        const nextMonth =
+            nextMonthDate.getMonth() + 1;
+
+
+        document.getElementById(
+            "nextMonth"
+        ).textContent =
+            `${nextMonth}月の包材`;
+
+
+        /* =========================
+           ケーキページへのリンク
+        ========================= */
+
+        /*
+           今月のケーキ
+           例：
+           9月 → 4cake.html?month=9
+        */
+
+        document.getElementById(
+            "currentCake"
+        ).href =
+            `4cake.html?month=${month + 1}`;
+
+
+        /*
+           翌月のケーキ
+           例：
+           9月 → 4cake.html?month=10
+
+           12月の場合は
+           1月になる
+        */
+
+        document.getElementById(
+            "nextCake"
+        ).href =
+            `4cake.html?month=${nextMonth}`;
+
+    }
+
+</script>
+
+
+</body>
+
+</html>
