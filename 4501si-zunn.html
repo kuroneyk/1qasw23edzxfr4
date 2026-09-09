@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>ケーキメニュー</title>
+
+    <style>
+
+        /* =========================
+           全体
+        ========================= */
+
+        body {
+            font-family: sans-serif;
+            background: #98fb98;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           タイトル
+        ========================= */
+
+        h1 {
+            text-align: center;
+            color: #5a4a4a;
+            margin-bottom: 30px;
+        }
+
+
+        /* =========================
+           選択カード
+        ========================= */
+
+        .menu-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+
+            text-decoration: none;
+            color: inherit;
+
+            display: block;
+
+            transition: 0.2s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.12);
+        }
+
+
+        /* =========================
+           カードタイトル
+        ========================= */
+
+        .menu-title {
+            font-size: 22px;
+            font-weight: bold;
+            color: #5a4a4a;
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+
+        /* =========================
+           説明
+        ========================= */
+
+        .menu-description {
+            text-align: center;
+            color: #888;
+            font-size: 14px;
+        }
+
+
+        /* =========================
+           戻る
+        ========================= */
+
+        .back-button {
+            display: block;
+            text-align: center;
+            margin-top: 30px;
+            color: #777;
+            text-decoration: none;
+        }
+
+        .back-button:hover {
+            text-decoration: underline;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+    <h1>シーズン</h1>
+
+
+    <!-- ケーキ基礎 -->
+    <a href="7cakekiso.html" class="menu-card">
+
+        <div class="menu-title">
+            🎂 ケーキ基礎シーズン
+        </div>
+
+        <div class="menu-description">
+            包材・必要物品を確認
+        </div>
+
+    </a>
+
+
+    <!-- ケーキマスター -->
+    <a href="4cake.html" class="menu-card">
+
+        <div class="menu-title">
+            🍞パン基礎シーズン
+        </div>
+
+        <div class="menu-description">
+            包材・必要物品を確認
+        </div>
+
+    </a>
+
+
+    <!-- 戻る -->
+    <a href="index.html" class="back-button">
+        ← 戻る
+    </a>
+
+</div>
+
+</body>
+
+</html>
