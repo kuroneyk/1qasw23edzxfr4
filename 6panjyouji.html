@@ -1,0 +1,285 @@
+```html
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>パン常時確認</title>
+
+    <style>
+
+        /* =========================
+           全体
+        ========================= */
+
+        body {
+            font-family: sans-serif;
+            background: #f7f4f2;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 700px;
+            margin: auto;
+        }
+
+
+        /* =========================
+           タイトル
+        ========================= */
+
+        h1 {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+
+        /* =========================
+           確認済み
+        ========================= */
+
+        .progress {
+            text-align: center;
+            font-weight: bold;
+            margin: 15px 0 20px;
+        }
+
+
+        /* =========================
+           備品カテゴリー
+        ========================= */
+
+        .category {
+            background: white;
+            padding: 18px;
+            border-radius: 15px;
+            margin-bottom: 15px;
+        }
+
+
+        /* =========================
+           項目タイトル
+        ========================= */
+
+        .sub-title {
+            font-size: 15px;
+            font-weight: bold;
+            margin-top: 18px;
+            margin-bottom: 5px;
+        }
+
+        .sub-title:first-child {
+            margin-top: 0;
+        }
+
+
+        /* =========================
+           チェックボックス
+        ========================= */
+
+        label {
+            display: block;
+            padding: 8px 5px;
+            font-size: 16px;
+        }
+
+        input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+
+
+        /* =========================
+           戻るボタン
+        ========================= */
+
+        .back-link {
+            display: block;
+            text-align: center;
+            font-size: 14px;
+            text-decoration: none;
+            color: #555;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        .back-link:hover {
+            color: #222;
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+<div class="container">
+
+
+    <!-- =========================
+         タイトル
+    ========================= -->
+
+    <h1>🍞 パン常時確認</h1>
+
+
+    <!-- =========================
+         確認済み
+    ========================= -->
+
+    <div class="progress">
+
+        確認済み：
+        <span id="count">0</span>
+        /
+        <span id="total">0</span>
+
+    </div>
+
+
+    <!-- =========================
+         パン常時確認
+    ========================= -->
+
+    <div class="category">
+
+        <div class="sub-title">
+            パン常時確認
+        </div>
+
+
+        <label>
+            <input type="checkbox" class="check">
+            保冷剤
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            サイドオープン
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ピザボックス
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ブレッド透明袋
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ビニタイシルバー
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ブレッド用手提げ袋
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            ミニプリンカップ（透明）
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            アルミカップ１２F
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            マイファトブラシ
+        </label>
+
+        <label>
+            <input type="checkbox" class="check">
+            マイパケ
+        </label>
+
+    </div>
+
+
+    <!-- =========================
+         前のページへ戻る
+    ========================= -->
+
+    <a href="5.html" class="back-link">
+        ← 前のページに戻る
+    </a>
+
+
+</div>
+
+
+<!-- =========================
+     JavaScript
+========================= -->
+
+<script>
+
+    /* =========================
+       チェック数を数える
+    ========================= */
+
+    const checks =
+        document.querySelectorAll(".check");
+
+    const count =
+        document.getElementById("count");
+
+    const total =
+        document.getElementById("total");
+
+
+    /* 全項目数 */
+
+    total.textContent =
+        checks.length;
+
+
+    /* =========================
+       チェック済みの数を更新
+    ========================= */
+
+    function updateCount() {
+
+        const checked =
+            document.querySelectorAll(
+                ".check:checked"
+            ).length;
+
+        count.textContent =
+            checked;
+
+    }
+
+
+    /* =========================
+       チェックが変更されたら更新
+    ========================= */
+
+    checks.forEach(check => {
+
+        check.addEventListener(
+            "change",
+            updateCount
+        );
+
+    });
+
+</script>
+
+
+</body>
+
+</html>
+```
