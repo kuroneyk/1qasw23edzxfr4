@@ -325,12 +325,18 @@ body.memo-mode .memo-area {
    戻る
 ========================= */
 
-.back-area {
+/* =========================
+   戻るボタン
+========================= */
+
+.back-area,
+.back2-area {
     text-align: center;
     margin: 25px 0 10px;
 }
 
-.back-link {
+.back-link,
+.back2-link {
     display: inline-block;
     text-decoration: none;
     color: #999;
@@ -340,8 +346,6 @@ body.memo-mode .memo-area {
     font-size: 13px;
     box-shadow: 0 2px 7px rgba(0,0,0,0.06);
 }
-
-
 /* =========================
    メモ一覧モーダル
 ========================= */
@@ -495,6 +499,7 @@ body.memo-mode .memo-area {
     </button>
 
 </div>
+
 
 
 <!-- =========================
@@ -1870,19 +1875,20 @@ body.memo-mode .memo-area {
      戻る
 ========================= -->
 
+<!-- 戻る -->
 <div class="back-area">
-
-    <a
-        href="3confirm.html"
-        class="back-link">
-        ← 確認ページへ戻る
+    <a href="3confirm.html" class="back-link">
+        ← 戻る
     </a>
-
 </div>
 
+<!-- カレンダーへ戻る -->
+<div class="back2-area">
+    <a href="index.html" class="back2-link">
+        ← カレンダーへ戻る
+    </a>
 </div>
-
-
+    
 <!-- =========================
      メモ一覧
 ========================= -->
@@ -2647,7 +2653,6 @@ checkModeButton.addEventListener(
 
     }
 );
-
 
 /* ==================================================
    メモモード
